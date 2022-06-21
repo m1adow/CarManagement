@@ -1,11 +1,11 @@
 ﻿<Page
-    x:Class="CarManagement.MainPage"
+    x:Class="PeopleManagement.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CarManagement"
+    xmlns:local="using:PeopleManagement"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:CarManagement.ViewModel"
+    xmlns:vm="using:PeopleManagement.ViewModel"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
@@ -23,11 +23,10 @@
             <TextBlock Text="Enter lastname:"/>
             <TextBox Text="{Binding Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Add"
-                    Command="{Binding AddCommand}"
-                    CommandParameter="{Binding ElementName=peopleListView}"/>
+                    Command="{Binding AddCommand}"/>
         </StackPanel>
         <ListView Grid.Column="1"
-                  x:Name="peopleListView">
+                  ItemsSource="{Binding People}">
             
         </ListView>
     </Grid>

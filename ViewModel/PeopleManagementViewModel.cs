@@ -1,69 +1,78 @@
-﻿using CarManagement.Models;
-using CarManagement.ViewModel.Commands;
+﻿using PeopleManagement.Infrastructure;
+using PeopleManagement.Models;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
-namespace CarManagement.ViewModel
+namespace PeopleManagement.ViewModel
 {
     public class PeopleManagementViewModel : INotifyPropertyChanged
     {
-        private string _firstname;
+        private string _firstname = string.Empty;
 
         public string Firstname
         {
             get => _firstname;
             set
             {
-                _firstname = value;
-                AddCommand.OnCanExecuteChanged();
-                OnPropertyChanged(nameof(Firstname));
+                if (value != _firstname)
+                {
+                    _firstname = value;
+                    (AddCommand as RelayCommand).OnExecuteChanged();
+                    OnPropertyChanged(nameof(Firstname));
+                }
             }
         }
 
-        private string _lastname;
+        private string _lastname = string.Empty;
 
         public string Lastname
         {
             get => _lastname;
             set
             {
-                _lastname = value;
-                AddCommand.OnCanExecuteChanged();
-                OnPropertyChanged(nameof(Lastname));
+                if (value != _lastname)
+                {
+                    _lastname = value;
+                    (AddCommand as RelayCommand).OnExecuteChanged();
+                    OnPropertyChanged(nameof(Lastname));
+                }
             }
         }
 
-        public AddCommand AddCommand { get; set; }
+        public ObservableCollection<Person> People { get; private set; }
+
+        public ICommand AddCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PeopleManagementViewModel()
         {
-            AddCommand = new AddCommand(this);
+            People = new ObservableCollection<Person>();
+
+            AddCommand = new RelayCommand(AddPerson, IsFieldsFilled);
         }
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public bool IsFieldsFilled()
+        private void AddPerson()
         {
-            if (Firstname is null || Lastname is null)
-                return false;
-
-            if (Firstname.Length > 0 && Lastname.Length > 0)
-                return true;
-
-            return false;
+            People.Add(CreatePerson());
+            ClearFields();
         }
 
-        public void ClearFields()
+        private bool IsFieldsFilled() => Firstname.Length > 0 && Lastname.Length > 0;
+
+        private void ClearFields()
         {
             Firstname = string.Empty;
             Lastname = string.Empty;
         }
 
-        public Person CreatePerson() => new Person
+        private Person CreatePerson() => new Person
         {
             Firstname = Firstname,
             Lastname = Lastname
-        };      
+        };
     }
 }

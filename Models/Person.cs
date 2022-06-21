@@ -1,4 +1,4 @@
-﻿namespace CarManagement.Models
+﻿namespace PeopleManagement.Models
 {
     public class Person
     {
