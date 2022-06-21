@@ -24,9 +24,15 @@
             <TextBox Text="{Binding Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Add"
                     Command="{Binding AddCommand}"/>
+            <Button Content="Delete"
+                    Command="{Binding DeleteCommand}"
+                    Foreground="Black"
+                    Background="Red"
+                    Visibility="{Binding DeleteButtonVisibility}"/>
         </StackPanel>
         <ListView Grid.Column="1"
-                  ItemsSource="{Binding People}">
+                  ItemsSource="{Binding People}"
+                  SelectedItem="{Binding SelectedPerson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             
         </ListView>
     </Grid>

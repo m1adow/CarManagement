@@ -11,7 +11,7 @@ namespace PeopleManagement.Infrastructure
 
         public event EventHandler CanExecuteChanged;
 
-        public RelayCommand(Action execute, Func<bool> canExecute)
+        public RelayCommand(Action execute, Func<bool> canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
