@@ -1,12 +1,11 @@
 ﻿using PeopleManagement.Infrastructure;
 using PeopleManagement.Models;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace PeopleManagement.ViewModel
 {
-    public class PeopleManagementViewModel : INotifyPropertyChanged
+    public class PeopleManagementViewModel : ViewModelBase
     {
         private string _firstname = string.Empty;
 
@@ -15,12 +14,8 @@ namespace PeopleManagement.ViewModel
             get => _firstname;
             set
             {
-                if (value != _firstname)
-                {
-                    _firstname = value;
-                    (AddCommand as RelayCommand).OnExecuteChanged();
-                    OnPropertyChanged(nameof(Firstname));
-                }
+                Set(ref _firstname, value);
+                (AddCommand as RelayCommand).OnExecuteChanged();
             }
         }
 
@@ -31,20 +26,14 @@ namespace PeopleManagement.ViewModel
             get => _lastname;
             set
             {
-                if (value != _lastname)
-                {
-                    _lastname = value;
-                    (AddCommand as RelayCommand).OnExecuteChanged();
-                    OnPropertyChanged(nameof(Lastname));
-                }
+                Set(ref _lastname, value);
+                (AddCommand as RelayCommand).OnExecuteChanged();
             }
         }
 
         public ObservableCollection<Person> People { get; private set; }
 
         public ICommand AddCommand { get; private set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public PeopleManagementViewModel()
         {
@@ -53,15 +42,18 @@ namespace PeopleManagement.ViewModel
             AddCommand = new RelayCommand(AddPerson, IsFieldsFilled);
         }
 
-        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
+        #region Methods for adding person
         private void AddPerson()
         {
             People.Add(CreatePerson());
             ClearFields();
-        }
+        }  
 
-        private bool IsFieldsFilled() => Firstname.Length > 0 && Lastname.Length > 0;
+        private Person CreatePerson() => new Person
+        {
+            Firstname = Firstname,
+            Lastname = Lastname
+        };
 
         private void ClearFields()
         {
@@ -69,10 +61,7 @@ namespace PeopleManagement.ViewModel
             Lastname = string.Empty;
         }
 
-        private Person CreatePerson() => new Person
-        {
-            Firstname = Firstname,
-            Lastname = Lastname
-        };
+        private bool IsFieldsFilled() => Firstname.Length > 0 && Lastname.Length > 0;
+        #endregion
     }
 }
