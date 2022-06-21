@@ -27,6 +27,8 @@ namespace CarManagement.ViewModel.Commands
                 return;
 
             listView.Items.Add(PeopleManagementViewModel.CreatePerson());
+
+            PeopleManagementViewModel.ClearFields();
         }
     }
 }

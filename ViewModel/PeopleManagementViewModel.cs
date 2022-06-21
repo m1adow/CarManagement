@@ -54,10 +54,16 @@ namespace CarManagement.ViewModel
             return false;
         }
 
+        public void ClearFields()
+        {
+            Firstname = string.Empty;
+            Lastname = string.Empty;
+        }
+
         public Person CreatePerson() => new Person
         {
             Firstname = Firstname,
             Lastname = Lastname
-        };
+        };      
     }
 }
