@@ -5,10 +5,30 @@
     xmlns:local="using:CarManagement"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:CarManagement.ViewModel"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Grid>
-
+    <Page.Resources>
+        <vm:PeopleManagementViewModel x:Key="viewModel"/>
+    </Page.Resources>
+    <Grid DataContext="{StaticResource viewModel}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0"
+                    Margin="10,5,10,5">
+            <TextBlock Text="Enter firstname:"/>
+            <TextBox Text="{Binding Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Enter lastname:"/>
+            <TextBox Text="{Binding Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Add"
+                    Command="{Binding AddCommand}"
+                    CommandParameter="{Binding ElementName=peopleListView}"/>
+        </StackPanel>
+        <ListView Grid.Column="1"
+                  x:Name="peopleListView">
+            
+        </ListView>
     </Grid>
 </Page>
