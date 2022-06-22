@@ -85,12 +85,6 @@ namespace PeopleManagement.ViewModel
             ClearFields();
         }
 
-        private Person CreatePerson() => new Person
-        {
-            Firstname = Firstname,
-            Lastname = Lastname
-        };
-
         private void ClearFields()
         {
             Firstname = string.Empty;
@@ -142,6 +136,12 @@ namespace PeopleManagement.ViewModel
                 
             return isPersonSelected;
         }
+
+        private void ShowSelectedPersonFields()
+        {
+            Firstname = SelectedPerson.Firstname;
+            Lastname = SelectedPerson.Lastname;
+        }
         #endregion
 
         #region Methods for updating person
@@ -160,11 +160,12 @@ namespace PeopleManagement.ViewModel
         }
         #endregion
 
-        private void ShowSelectedPersonFields()
+        #region Methods which using in all commands
+        private Person CreatePerson() => new Person
         {
-            Firstname = SelectedPerson.Firstname;
-            Lastname = SelectedPerson.Lastname;
-        }
+            Firstname = Firstname,
+            Lastname = Lastname
+        };
 
         private void ChangeVisibility(Visibility visibility)
         {
@@ -178,5 +179,6 @@ namespace PeopleManagement.ViewModel
         }
 
         private void ResetSelectedPerson() => _selectedPerson = new Person();
+        #endregion
     }
 }
