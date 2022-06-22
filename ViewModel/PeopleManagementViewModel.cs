@@ -16,7 +16,7 @@ namespace PeopleManagement.ViewModel
         public string Firstname
         {
             get => _firstname;
-            set => Set(ref _firstname, value, AddCommand);
+            set => Set(ref _firstname, value, new ICommand[] { AddCommand });
         }
 
         private string _lastname = string.Empty;
@@ -24,7 +24,7 @@ namespace PeopleManagement.ViewModel
         public string Lastname
         {
             get => _lastname;
-            set => Set(ref _lastname, value, AddCommand);
+            set => Set(ref _lastname, value, new ICommand[] { AddCommand });
         }
 
         private Person _selectedPerson = new Person();
@@ -32,7 +32,15 @@ namespace PeopleManagement.ViewModel
         public Person SelectedPerson
         {
             get => _selectedPerson;
-            set => Set(ref _selectedPerson, value, DeleteCommand);
+            set => Set(ref _selectedPerson, value, new ICommand[] { DeleteCommand, UpdateCommand });
+        }
+
+        private Visibility _addButtonVisibility = Visibility.Visible;
+
+        public Visibility AddButtonVisibility
+        {
+            get => _addButtonVisibility;
+            set => Set(ref _addButtonVisibility, value);
         }
 
         private Visibility _deleteButtonVisibility = Visibility.Collapsed;
@@ -43,11 +51,21 @@ namespace PeopleManagement.ViewModel
             set => Set(ref _deleteButtonVisibility, value);
         }
 
+        private Visibility _updateButtonVisibility = Visibility.Collapsed;
+
+        public Visibility UpdateButtonVisibility
+        {
+            get => _updateButtonVisibility;
+            set => Set(ref _updateButtonVisibility, value);
+        }
+
         public ObservableCollection<Person> People { get; private set; }
 
         public ICommand AddCommand { get; private set; }
 
         public ICommand DeleteCommand { get; private set; }
+
+        public ICommand UpdateCommand { get; private set; }
 
         private bool _isDeletedConfrimed = false;
 
@@ -57,6 +75,7 @@ namespace PeopleManagement.ViewModel
 
             AddCommand = new RelayCommand(AddPerson, IsFieldsFilled);
             DeleteCommand = new RelayCommand(DeletePerson, IsPersonSelected);
+            UpdateCommand = new RelayCommand(UpdatePerson);
         }
 
         #region Methods for adding person
@@ -90,7 +109,7 @@ namespace PeopleManagement.ViewModel
                 return;
 
             People.Remove(SelectedPerson);
-            DeleteButtonVisibility = Visibility.Collapsed;
+            ResetSelectedPerson();
         }
 
         private async Task ShowConfirmingDialog()
@@ -103,8 +122,11 @@ namespace PeopleManagement.ViewModel
             await messageDialog.ShowAsync();
         }
 
-        private void CommandInvokedHandler(IUICommand command) => _isDeletedConfrimed = command.Label == "OK";
-
+        private void CommandInvokedHandler(IUICommand command)
+        {
+            _isDeletedConfrimed = command.Label == "OK";
+            ChangeVisibility(Visibility.Collapsed);
+        }
 
         private bool IsPersonSelected()
         {
@@ -113,10 +135,48 @@ namespace PeopleManagement.ViewModel
                 SelectedPerson.Lastname != null;
 
             if (isPersonSelected)
-                DeleteButtonVisibility = Visibility.Visible;
-
+            {
+                ChangeVisibility(Visibility.Visible);
+                ShowSelectedPersonFields();
+            }
+                
             return isPersonSelected;
         }
         #endregion
+
+        #region Methods for updating person
+        private void UpdatePerson()
+        {
+            UpdatePersonInCollection();
+            ChangeVisibility(Visibility.Collapsed);
+            ResetSelectedPerson();
+        }
+
+        private void UpdatePersonInCollection()
+        {
+            int index = People.IndexOf(SelectedPerson);
+            People.RemoveAt(index);
+            People.Insert(index, CreatePerson());
+        }
+        #endregion
+
+        private void ShowSelectedPersonFields()
+        {
+            Firstname = SelectedPerson.Firstname;
+            Lastname = SelectedPerson.Lastname;
+        }
+
+        private void ChangeVisibility(Visibility visibility)
+        {
+            DeleteButtonVisibility = visibility;
+            UpdateButtonVisibility = visibility;
+
+            if (visibility == 0)
+                AddButtonVisibility = Visibility.Collapsed;
+            else
+                AddButtonVisibility = Visibility.Visible;
+        }
+
+        private void ResetSelectedPerson() => _selectedPerson = new Person();
     }
 }

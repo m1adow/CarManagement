@@ -11,7 +11,7 @@ namespace PeopleManagement.ViewModel
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        protected virtual void Set<T>(ref T field, T value, ICommand command = null, [CallerMemberName] string propertyName = null)
+        protected virtual void Set<T>(ref T field, T value, ICommand[] commands = null, [CallerMemberName] string propertyName = null)
         {
             if (field.Equals(value))
                 return;
@@ -19,8 +19,9 @@ namespace PeopleManagement.ViewModel
             field = value;
             OnPropertyChanged(propertyName);
 
-            if (command != null)
-                (command as RelayCommand).OnExecuteChanged();
+            if (commands != null)
+                foreach (var command in commands)
+                    (command as RelayCommand).OnExecuteChanged();
         }
     }
 }

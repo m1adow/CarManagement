@@ -23,7 +23,11 @@
             <TextBlock Text="Enter lastname:"/>
             <TextBox Text="{Binding Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Add"
-                    Command="{Binding AddCommand}"/>
+                    Command="{Binding AddCommand}"
+                    Visibility="{Binding AddButtonVisibility}"/>
+            <Button Content="Update"
+                    Command="{Binding UpdateCommand}"
+                    Visibility="{Binding UpdateButtonVisibility}"/>
             <Button Content="Delete"
                     Command="{Binding DeleteCommand}"
                     Foreground="Black"
