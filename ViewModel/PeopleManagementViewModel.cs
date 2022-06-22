@@ -99,6 +99,8 @@ namespace PeopleManagement.ViewModel
         {
             await ShowConfirmingDialog();
 
+            ResetFields();
+
             if (!_isDeletedConfrimed)
                 return;
 
@@ -120,6 +122,12 @@ namespace PeopleManagement.ViewModel
         {
             _isDeletedConfrimed = command.Label == "OK";
             ChangeVisibility(Visibility.Collapsed);
+        }
+
+        private void ResetFields()
+        {
+            Firstname = string.Empty;
+            Lastname = string.Empty;
         }
 
         private bool IsPersonSelected()
