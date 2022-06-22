@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace PeopleManagement.Infrastructure
+namespace PeopleManagement.ViewModel.Infrastructure
 {
     public class RelayCommand : ICommand
     {

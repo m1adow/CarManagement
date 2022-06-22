@@ -5,13 +5,10 @@
     xmlns:local="using:PeopleManagement">
     <Application.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="25"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="Black"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
         <Style TargetType="Button">
@@ -21,7 +18,6 @@
             <Setter Property="Height" Value="50"/>
             <Setter Property="FontSize" Value="30"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="Purple"/>
         </Style>
     </Application.Resources>
